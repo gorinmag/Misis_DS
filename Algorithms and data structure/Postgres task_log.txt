@@ -1,0 +1,55 @@
+ivan=# create table aero(city text, company text, date timestamp);
+CREATE TABLE
+ivan=# \d
+           Список отношений
+ Схема  |  Имя   |   Тип   | Владелец
+--------+--------+---------+----------
+ public | aero   | таблица | test
+ public | test_a | таблица | test
+ public | test_b | таблица | test
+(3 строки)
+
+
+ivan=# \copy aero form D:\exercise.csv delimiter ',' csv header;
+\copy: ошибка разбора аргумента "form"
+ivan=# \copy aero from D:\exercise.csv delimiter ',' csv header;
+COPY 7
+ivan=# delete from aero *
+ivan-# ;
+DELETE 7
+ivan=# \copy aero from D:\exercise.csv delimiter ',' csv header;
+COPY 10
+ivan=# select * from aero where company != 'Aeroflot';
+       city       | company |        date
+------------------+---------+---------------------
+ Saint Petersburg | S7      | 2024-10-03 00:00:00
+ Tumen            | S7      | 2024-10-05 00:00:00
+ Chelybinsk       | Pobeda  | 2024-10-06 00:00:00
+ Anapa            | S7      | 2024-10-04 00:00:00
+ Krasnoyarsk      | Pobeda  | 2024-10-29 00:00:00
+ Penza            | S7      | 2024-11-18 00:00:00
+(6 строк)
+
+
+ivan=# \copy (select * from aero) to D:\aero.csv delimiter ',' csv header;
+COPY 10
+ivan=# delete from aero *
+ivan-# ;
+DELETE 10
+ivan=# \copy aero from D:\aero.csv delimiter ',' csv header;
+COPY 10
+ivan=#
+ivan=# update aero set company = 'Aeroflot 2' where company = 'Aeroflot';
+UPDATE 4
+ivan=# delete from aero where company = 'S7';
+DELETE 4
+ivan=# select * from aero;
+    city     |  company   |        date
+-------------+------------+---------------------
+ Chelybinsk  | Pobeda     | 2024-10-06 00:00:00
+ Krasnoyarsk | Pobeda     | 2024-10-29 00:00:00
+ Kazan       | Aeroflot 2 | 2024-10-04 00:00:00
+ Tomsk       | Aeroflot 2 | 2024-10-10 00:00:00
+ Sochi       | Aeroflot 2 | 2024-11-15 00:00:00
+ Vladimir    | Aeroflot 2 | 2024-10-24 00:00:00
+(6 строк)
