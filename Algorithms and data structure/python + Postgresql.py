@@ -70,6 +70,7 @@ cursor.execute('select * from data')
 query5 = [dict((cursor.description[i][0], value) for i, value in enumerate(row)) for row in cursor.fetchall()]
 #Задание 5
 # Заполнить 2 списка данными из таблицы
+
 x_ = []
 y_ = []
 for i in query5:
