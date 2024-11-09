@@ -18,5 +18,8 @@ class ConnectionDB:
     def close_db(self):
         self.cursor.close()
         self.connect.close()
+    def get_speed_for2task(self):
+        self.cursor.execute("select terminal_id, timestamp, can_data from messages where terminal_id = '431960516073808' limit 40000")
+        return  [dict((self.cursor.description[i][0], value) for i, value in enumerate(row)) for row in self.cursor.fetchall()]
 
 
