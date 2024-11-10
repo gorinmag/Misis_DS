@@ -58,3 +58,4 @@ if __name__ == "__main__":
     print(cache.get("key2"))  # Получаем значение по ключу "key2"
     cache.cache = ("key4", "value4")  # Добавляем новый элемент, превышающий лимит
     cache.print_cache()  # Выводим обновленный кэш
+
