@@ -1,16 +1,14 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import warnings
-warnings.filterwarnings("ignore")
 
 df = pd.read_csv('task_19.csv')
 df = df.sort_values(by='timestamp')
 df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s')
 actions = df.groupby(df['timestamp'].dt.date).size().to_dict()
 #Убираю незначимые действия
-filtered_df = (df[~df['url'].str.startswith('/')][~df['url'].str.startswith('?')])
+filtered_df_1 = df[~df['url'].str.startswith('/')]
+filtered_df = filtered_df_1[~filtered_df_1['url'].str.startswith('?')]
 page_visits = filtered_df['url'].value_counts()
-# print(filtered_df)
 
 filtered_df['operation'], filtered_df['file'] = filtered_df['url'].str.split('/', 1).str
 file_operations = (filtered_df.groupby(['operation', 'file']).size().unstack(fill_value=0)).sum(axis=1)
@@ -21,7 +19,7 @@ act_point['del'] = df[df['url'].str.startswith('/del')]['url'].count()
 act_point['add'] = df[df['url'].str.startswith('/add')]['url'].count()
 # Собираю данные о регистрации входов в систему
 df_login = df[df['url']=='login']
-df_login['hourly'] = (df_login['timestamp'].astype("datetime64[s]")).dt.strftime('%Y-%m-%d %H')
+df_login['hourly'] = df_login['timestamp'].astype("datetime64[s]").dt.strftime('%Y-%m-%d %H')
 login_group = df_login.groupby(df_login['hourly']).size()
 print(login_group)
 
